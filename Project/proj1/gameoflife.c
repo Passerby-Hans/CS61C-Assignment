@@ -17,35 +17,43 @@
 #include <inttypes.h>
 #include "imageloader.h"
 
-//Determines what color the cell at the given row/col should be. This function allocates space for a new Color.
-//Note that you will need to read the eight neighbors of the cell in question. The grid "wraps", so we treat the top row as adjacent to the bottom row
-//and the left column as adjacent to the right column.
+// 判定 (row, col) 位置的细胞下一代应该是什么颜色，并为返回的 Color 分配新的内存
+//（由调用方负责释放）。
+// 注意：你需要读取该细胞的 8 个邻居。网格采用「环绕（wrap-around）」拓扑：
+// 即最上一行与最下一行视为相邻，最左一列与最右一列视为相邻。
 Color *evaluateOneCell(Image *image, int row, int col, uint32_t rule)
 {
 	//YOUR CODE HERE
 }
 
-//The main body of Life; given an image and a rule, computes one iteration of the Game of Life.
-//You should be able to copy most of this from steganography.c
+// 生命游戏的主体逻辑：给定一张图像和一条规则，
+// 计算并返回演化一代后的新图像。
+// 这里大部分代码可以直接从 steganography.c 中复用。
 Image *life(Image *image, uint32_t rule)
 {
 	//YOUR CODE HERE
 }
 
 /*
-Loads a .ppm from a file, computes the next iteration of the game of life, then prints to stdout the new image.
+从指定文件中读取一个 .ppm 图像，计算其在生命游戏规则下演化一代后的新图像，
+然后将新图像打印到标准输出。
 
-argc stores the number of arguments.
-argv stores a list of arguments. Here is the expected input:
-argv[0] will store the name of the program (this happens automatically).
-argv[1] should contain a filename, containing a .ppm.
-argv[2] should contain a hexadecimal number (such as 0x1808). Note that this will be a string.
-You may find the function strtol useful for this conversion.
-If the input is not correct, a malloc fails, or any other error occurs, you should exit with code -1.
-Otherwise, you should return from main with code 0.
-Make sure to free all memory before returning!
+参数说明：
+- argc：命令行参数的个数。
+- argv：命令行参数列表，期望的输入如下：
+    * argv[0]：程序名（由系统自动填充）。
+    * argv[1]：输入文件名，对应一个 .ppm 文件。
+    * argv[2]：规则的十六进制字符串，例如 "0x1808"。
+              注意这是字符串形式，可以使用 strtol 进行转换。
 
-You may find it useful to copy the code from steganography.c, to start.
+错误处理：
+- 如果输入参数不正确、malloc 失败或发生其他错误，
+  应当以退出码 -1 结束程序。
+- 否则 main 函数返回 0。
+
+注意：返回之前必须释放所有分配过的内存！
+
+提示：可以先从 steganography.c 复制代码作为起点。
 */
 int main(int argc, char **argv)
 {

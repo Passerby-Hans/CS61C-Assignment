@@ -1,2 +1,15 @@
 .DS_Store
 */.DS_Store
+# Local agent documents, IDE settings, and generated coursework files
+/doc/
+/CLAUDE.md
+.idea/
+*.o
+/Lab/lab02/bit_ops
+/Lab/lab02/lfsr
+/Lab/lab02/vector-test
+/Project/proj1/imageloadertester
+/Project/proj1/steganography
+/Project/proj1/gameoflife
+/Project/proj1/studentOutputs/*
+!/Project/proj1/studentOutputs/.gitignore
