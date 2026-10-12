@@ -40,6 +40,12 @@ gameoflife: imageloader.o gameoflife.o
 gameoflifememcheck: gameoflife
 	valgrind $(VGFLAGS) ./gameOfLife testInputs/JohnConway.ppm 0x1808 > studentOutputs/temp.ppm
 
+# 多代演化驱动器（本地玩用，不参与评分）：-Dmain 把 gameoflife.c 的入口改名以避开双 main 冲突
+evolve: evolve.c gameoflife.c imageloader.c imageloader.h
+	gcc -g -Wall -std=c99 -Dmain=graded_main -c gameoflife.c -o gameoflife_x.o
+	gcc -g -Wall -std=c99 -c evolve.c
+	gcc -g -Wall -o evolve evolve.o gameoflife_x.o imageloader.o
+
 
 %.o: %.c
 	$(CC) $(CFLAGS) $<
@@ -49,3 +55,4 @@ clean:
 	rm -f gameOfLife
 	rm -f steganography
 	rm -f imageloadertester
+	rm -f evolve

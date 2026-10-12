@@ -11,5 +11,6 @@
 /Project/proj1/imageloadertester
 /Project/proj1/steganography
 /Project/proj1/gameoflife
+/Project/proj1/evolve
 /Project/proj1/studentOutputs/*
 !/Project/proj1/studentOutputs/.gitignore
