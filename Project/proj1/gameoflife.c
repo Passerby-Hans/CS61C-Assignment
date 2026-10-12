@@ -71,40 +71,7 @@ Color *evaluateOneCell(Image *image, int row, int col, uint32_t rule)
 // 这里大部分代码可以直接从 steganography.c 中复用。
 Image *life(Image *image, uint32_t rule)
 {
-	Image *new_image = malloc(sizeof(Image));
-	if (new_image == NULL) {
-		fprintf(stderr, "Error: Could not allocate memory for image\n");
-		exit(-1);
-	}
-	new_image->rows = image->rows;
-	new_image->cols = image->cols;
-
-	new_image->image = malloc(sizeof(Color*) * image->rows);
-	if (new_image->image == NULL) {
-		fprintf(stderr, "Error: Could not allocate memory for image\n");
-		exit(-1);
-	}
-
-	for (uint32_t i = 0; i < image->rows; i++) {
-		new_image->image[i] = malloc(sizeof(Color) * image->cols);
-		if (new_image->image[i] == NULL) {
-			fprintf(stderr, "Error: Could not allocate memory for image\n");
-			exit(-1);
-		}
-	}
-
-	for (uint32_t i = 0; i < image->rows; i++) {
-		for (uint32_t j = 0; j < image->cols; j++) {
-			Color *next_color = evaluateOneCell(image, i, j, rule);
-			if (next_color == NULL) {
-				fprintf(stderr, "Error: Could not evaluate one cell\n");
-				exit(-1);
-			}
-			new_image->image[i][j] = *next_color;
-			free(next_color);
-		}
-	}
-	return new_image;
+	//YOUR CODE HERE
 }
 
 /*
@@ -130,32 +97,5 @@ Image *life(Image *image, uint32_t rule)
 */
 int main(int argc, char **argv)
 {
-	if (argc != 3) {
-		fprintf(stderr, "usage: %s filename rule\n", argv[0]);
-		fprintf(stderr, "filename is an ASCII PPM file (type P3) with maximum value 255.\n");
-		fprintf(stderr, "rule is a hex number beginning with 0x; Life is 0x1808.\n");
-		exit(-1);
-	}
-
-	char *input_file = argv[1];
-	uint32_t rule = (uint32_t)strtol(argv[2], NULL, 16);
-
-	Image *input_img = readData(input_file);
-	if (input_img == NULL) {
-		fprintf(stderr, "can not read %s as 'Image' type\n", input_file);
-		exit(-1);
-	}
-
-	Image *next_img = life(input_img, rule);
-	if (next_img == NULL) {
-		fprintf(stderr, "can not evolve %s\n", input_file);
-		freeImage(input_img);
-		exit(-1);
-	}
-
-	writeData(next_img);
-	freeImage(next_img);
-	freeImage(input_img);
-
-	return 0;
+	//YOUR CODE HERE
 }
