@@ -31,6 +31,7 @@ static uint32_t pack24(const Color *c)
 // 即最上一行与最下一行视为相邻，最左一列与最右一列视为相邻。
 Color *evaluateOneCell(Image *image, int row, int col, uint32_t rule)
 {
+	// 八个方向的RGB值3合1
 	// 每个邻居只做一次回绕取模和一次打包
 	uint32_t neighbors[8];
 	int k = 0;
@@ -71,7 +72,37 @@ Color *evaluateOneCell(Image *image, int row, int col, uint32_t rule)
 // 这里大部分代码可以直接从 steganography.c 中复用。
 Image *life(Image *image, uint32_t rule)
 {
-	//YOUR CODE HERE
+	Image *newImage = malloc(sizeof(Image));
+	if (!newImage) {
+		fprintf(stderr, "Error: Failed to allocate memory for new image\n");
+		exit(-1);
+	}
+	newImage->rows = image->rows;
+	newImage->cols = image->cols;
+	newImage->image = malloc(newImage->rows * sizeof(Color *));
+	if (!newImage->image) {
+		fprintf(stderr, "Error: Failed to allocate memory for new image rows\n");
+		free(newImage);
+		exit(-1);
+	}
+	for (uint32_t i = 0; i < newImage->rows; i++) {
+		newImage->image[i] = malloc(newImage->cols * sizeof(Color));
+		if (!newImage->image[i]) {
+			fprintf(stderr, "Error: Failed to allocate memory for new image columns\n");
+			for (uint32_t j = 0; j < i; j++) {
+				free(newImage->image[j]);
+			}
+			free(newImage->image);
+			free(newImage);
+			exit(-1);
+		}
+		for (uint32_t j = 0; j < newImage->cols; j++) {
+			Color *newColor = evaluateOneCell(image, i, j, rule);
+			newImage->image[i][j] = *newColor;   // 结构体整体赋值 = 逐成员拷贝
+			free(newColor);
+		}
+	}
+	return newImage;
 }
 
 /*
@@ -97,5 +128,25 @@ Image *life(Image *image, uint32_t rule)
 */
 int main(int argc, char **argv)
 {
-	//YOUR CODE HERE
+	if (argc != 3) {
+		fprintf(stderr, "usage: %s filename rule\n", argv[0]);
+		fprintf(stderr, "filename is an ASCII PPM file (type P3) with maximum value 255.\n");
+		fprintf(stderr, "rule is a hex number beginning with 0x; Life is 0x1808.\n");
+    	exit(-1);
+	}
+
+	char *input_file = argv[1];
+	Image *input_img = readData(input_file);
+	if (input_img == NULL) {
+		fprintf(stderr, "can not read %s as 'Image' type\n", input_file);
+    	exit(-1);
+	}
+	uint32_t rule = strtol(argv[2], NULL, 16);
+	Image *output_img = life(input_img, rule);
+	writeData(output_img);
+
+	freeImage(input_img);
+	freeImage(output_img);
+
+	return 0;
 }
